@@ -1,113 +1,143 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Login for education purpose!</title>
-    <style>
-      #loginForm input[type="submit"] {
-        background-color: #4CAF50;
-        color: white;
-        padding: 16px 40px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: background 0.3s;
-      }
-      #loginForm input[type="submit"]:hover {
-        background-color: #45a049;
-      }
-      #stuRegNoDisplay {
-        font-weight: bold;
-        margin-left: 10px;
-        color: #333;
-      }
+  <title>Login for education purpose!</title>
+  <style>
+    #loginForm input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px 40px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background 0.3s;
+    }
 
-      #button, button {
-    padding: 17px 45px;
-    font-size: 18px;
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  #button:hover, button:hover {
-    background-color: #0072a3;
-  }
-  #button:active, button:active {
-    background-color: #005f7a;
-    box-shadow: 0 2px #666;
-    transform: translateY(2px);
-  }
-    </style>
+    #loginForm input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    #stuRegNoDisplay {
+      font-weight: bold;
+      margin-left: 10px;
+      color: #333;
+    }
+
+    #button,
+    button {
+      padding: 17px 45px;
+      font-size: 18px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #button:hover,
+    button:hover {
+      background-color: #0072a3;
+    }
+
+    #button:active,
+    button:active {
+      background-color: #005f7a;
+      box-shadow: 0 2px #666;
+      transform: translateY(2px);
+    }
+  </style>
 </head>
+
 <body>
-    <h2>Login Form</h2>
-    <form id="loginForm" method="post">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required><br><br>
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br><br>
+  <h2>Login Form</h2>
 
-        <input type="submit" value="Login">
-    </form>
-    <br>
-    <button onclick="previousStuRegNo()">Previous StuRegNo</button>
-    <button onclick="nextStuRegNo()">Next StuRegNo</button>
-    <span id="stuRegNoDisplay"></span>
-</body>
-<script>
-  const words = [
-    '250166071',
-'250026801',
-'250013244',
-'250038711',
-'250027760',
-'250126614',
-'250028069',
-'250113460',
-'250149389',
-'250048985'
+  <form id="loginForm" method="post">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required><br><br>
 
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required><br><br>
 
-];
+    <input type="submit" value="Login">
+  </form>
 
-  // Load currentIndex from localStorage, or default to 0
-  let currentIndex = parseInt(localStorage.getItem('currentIndex')) || 0;
+  <br>
+  <button onclick="previousStuRegNo()">Previous StuRegNo</button>
+  <button onclick="nextStuRegNo()">Next StuRegNo</button>
+  <span id="stuRegNoDisplay"></span>
 
-  function updateStuRegNo() {
-    const stuRegNo = words[currentIndex];
-    document.getElementById('loginForm').action =
-      'https://example.com/ugentrance25/printfrm.aspx?StuRegNo=' + stuRegNo;
-    document.getElementById('stuRegNoDisplay').textContent = "Current StuRegNo: " + stuRegNo;
-    // Save currentIndex to localStorage
-    localStorage.setItem('currentIndex', currentIndex);
-  }
+  <script>
+    const words = [
+      '250166071',
+      '250026801',
+      '250013244',
+      '250038711',
+      '250027760',
+      '250126614',
+      '250028069',
+      '250113460',
+      '250149389',
+      '250048985'
+    ];
 
-// ...existing code...
-function nextStuRegNo() {
-  currentIndex = (currentIndex + 1) % words.length;
-  updateStuRegNo();
-  document.getElementById('loginForm').submit(); // Submit the form
-}
-// ...existing code...
-  // Function to go to the next StuRegNo
-  // Function to go to the previous StuRegNo
+    let currentIndex = parseInt(localStorage.getItem('currentIndex')) || 0;
 
+    function updateStuRegNo() {
+      const stuRegNo = words[currentIndex];
+      document.getElementById('loginForm').action =
+        'https://example.com/ugentrance25/printfrm.aspx?StuRegNo=' + stuRegNo;
+      document.getElementById('stuRegNoDisplay').textContent = "Current StuRegNo: " + stuRegNo;
+      localStorage.setItem('currentIndex', currentIndex);
+    }
 
-  function previousStuRegNo() {
-    currentIndex = (currentIndex - 1 + words.length) % words.length;
+    function nextStuRegNo() {
+      currentIndex = (currentIndex + 1) % words.length;
+      const stuRegNo = words[currentIndex];
+      localStorage.setItem('currentIndex', currentIndex);
+
+      // Create a new form that opens in a new tab
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://example.com/ugentrance25/printfrm.aspx?StuRegNo=' + stuRegNo;
+      form.target = '_blank';
+
+      const usernameInput = document.createElement('input');
+      usernameInput.type = 'hidden';
+      usernameInput.name = 'username';
+      usernameInput.value = document.getElementById('username').value;
+      form.appendChild(usernameInput);
+
+      const passwordInput = document.createElement('input');
+      passwordInput.type = 'hidden';
+      passwordInput.name = 'password';
+      passwordInput.value = document.getElementById('password').value;
+      form.appendChild(passwordInput);
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+
+      updateStuRegNo();
+    }
+
+    function previousStuRegNo() {
+      currentIndex = (currentIndex - 1 + words.length) % words.length;
+      updateStuRegNo();
+      document.getElementById('loginForm').submit(); // Opens in same tab
+    }
+
+    // Autofill
+    document.getElementById('username').value = 'ritesh@outlook.com';
+    document.getElementById('password').value = '456428';
+
+    // Initialize display on load
     updateStuRegNo();
-    document.getElementById('loginForm').submit(); // Submit the form
-  }
+  </script>
 
-  // Autofill username and password
-  document.getElementById('username').value = 'ritesh@outlook.com';
-  document.getElementById('password').value = '456428';
+</body>
 
-  // Initialize on page load
-  updateStuRegNo();
-</script>
 </html>
